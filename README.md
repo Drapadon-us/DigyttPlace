@@ -1,1 +1,1 @@
-# place.manechat.net
+# lol i love airplane wifi

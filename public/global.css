@@ -130,3 +130,24 @@ dialog::backdrop
 {
 	background-color: rgba(0, 0, 0, 0.5);
 }
+
+#loading-screen
+{
+	position: absolute;
+
+	width: 100%;
+	height: 100%;
+
+	background-color: #E5E5E5;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	transition: 0.5s ease;
+}
+
+#loading-screen.hidden
+{
+	opacity: 0%;
+}

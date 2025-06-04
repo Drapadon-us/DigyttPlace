@@ -11,13 +11,15 @@ import * as Discord from "./discord.api.js";
 import { intersects } from "./util.js";
 import ChannelTracker from "./channel.tracker.js";
 import Statistics from "./canvas.stats.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 
 
 // TODO: Add /api/... path to all endpoints (Polka is dogshit and wouldn't allow me to mount middleware like that)
 
 // ---------------- Discord ----------------
-
+console.log(process.env.DISCORD_TOKEN)
 const DISCORD = new Discord.Client(process.env.DISCORD_TOKEN, Discord.Intent.GUILDS | Discord.Intent.GUILD_MEMBERS);
 
 DISCORD._gatewayClient.on("close", (c, r) => console.log(new Date().toLocaleString(), c, r));
@@ -70,7 +72,19 @@ const STATS_PATH = Path.join(import.meta.dirname, "data", "stats.json");
 await IO.readStats(STATS, STATS_PATH);
 
 const EVENTS_PATH = Path.join(import.meta.dirname, "data", "events.bin");
-await IO.readEvents(CANVAS, EVENTS_PATH);
+const eventsFileExists = await FileSystem.stat(EVENTS_PATH).then(() => true).catch(() => false);
+
+if (eventsFileExists) {
+	const eventsFileContent = await FileSystem.readFile(EVENTS_PATH, 'utf8');
+	if (eventsFileContent.trim()) {
+		await IO.readEvents(CANVAS, EVENTS_PATH);
+	} else {
+		console.warn(`Warning: ${EVENTS_PATH} is empty. Skipping event loading.`);
+	}
+} else {
+	console.warn(`Warning: ${EVENTS_PATH} does not exist. Skipping event loading.`);
+}
+
 await IO.startWritingEvents(CANVAS, EVENTS_PATH);
 
 IO.gracefulShutdown( () => IO.writeStats(STATS, STATS_PATH) );
@@ -88,10 +102,11 @@ SERVER.use(Sirv(Path.join(import.meta.dirname, "public")), helpers, session());
 
 SERVER.get("/login", (req, res) =>
 {
+	const protocol = req.headers.host.includes("localhost") ? "http" : "https";
 	const query = Query.encode({
 		client_id: process.env.DISCORD_CLIENT_ID,
 		response_type: "code",
-		redirect_uri: `https://${req.headers.host}/login/redirect`, // TODO: Automatically determine protocol
+		redirect_uri: `${protocol}://${req.headers.host}/login/redirect`, // TODO: Automatically determine protocol
 		scope: "identify",
 		state: req.query.from // So we can redirect back to stats
 	});
@@ -103,6 +118,7 @@ SERVER.get("/login/redirect", async (req, res) =>
 {
 	const code = req.query.code;
 	const redirect = `/${ req.query.state || "" }`;
+	const protocol = req.headers.host.includes("localhost") ? "http" : "https";
 
 	if (!code) return res.redirect(redirect);
 
@@ -110,7 +126,7 @@ SERVER.get("/login/redirect", async (req, res) =>
 		client_id: process.env.DISCORD_CLIENT_ID,
 		client_secret: process.env.DISCORD_CLIENT_SECRET,
 		grant_type: "authorization_code",
-		redirect_uri: `https://${req.headers.host}/login/redirect`, // TODO: Same
+		redirect_uri: `${protocol}://${req.headers.host}/login/redirect`, // TODO: Same
 		code,
 	};
 
@@ -182,6 +198,10 @@ SERVER.post("/place", async (req, res) =>
 	if (!req.session?.userId) return res.status(401).end();
 	if (await getUserStatus(req.session.userId) < UserStatus.LOGGED_IN) return res.status(403).end();
 
+	if (req.body.isAdmin) {
+		if (await getUserStatus(req.session.userId) !== UserStatus.ADMIN) return res.status(403).end();
+		return res.json(CANVAS.adminPlace(req.body.x, req.body.y, req.body.color, req.session.userId));
+	}
 	res.json(CANVAS.place(req.body.x, req.body.y, req.body.color, req.session.userId));
 });
 
@@ -312,4 +332,4 @@ SERVER.get("/statistics-for/:id", async (req, res) =>
 
 // ---------------- Start ----------------
 
-SERVER.listen(5000, () => console.log(`Server started on port 5000`));
+SERVER.listen(5001, () => console.log(`Server started on port 5001`));

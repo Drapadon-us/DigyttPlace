@@ -87,6 +87,8 @@ const [
  * ============ Set up elements ===============
  */
 
+const loadingScreen = document.getElementById("loading-screen");
+
 COMPONENT_STATE.subscribe("colors", Components.PickerColorsComponent());
 COMPONENT_STATE.subscribe("userStatus", "currentCooldown", Components.PickerConfirmComponent());
 COMPONENT_STATE.subscribe("userStatus", "cooldown", "currentCooldown", "currentMaxCooldown", Components.PlaceColorComponent());
@@ -137,6 +139,14 @@ document.getElementById("logout").onclick = () =>
 };
 
 // --------------------------------------
+
+function openHeelerHouse()
+{
+	CLICK_SOUND.play();
+	window.location.href = "https://discord.gg/blueyheeler";
+}
+
+document.getElementById("discordinvite").onclick = openHeelerHouse;
 
 const OPTIONS = document.getElementById("options");
 document.getElementById("configure").onclick = () => { MENU.close(); OPTIONS.showModal(); CLICK_SOUND.play(); };
@@ -321,7 +331,10 @@ CAMERA.setY(canvasY);
 const RENDERER = new Renderer(GL, CAMERA);
 RENDERER.batches.push(COLOR_BATCH, CANVAS_BATCH, SELECTOR_BATCH);
 
-await loadCanvas();
+await loadCanvas().then(() => {
+	loadingScreen.classList.add("hidden");
+	setTimeout(() => loadingScreen.remove(), 500);
+});
 CAMERA.setZoom(minZoom * 2);
 
 // --------------------------------------
@@ -563,12 +576,20 @@ function _GWrXtp(){}var UACBZd=Object['defineProperty'],ecVwRwY,Jv8Lzp,p9QqT8,LH
 
 function placePixel(color)
 {
+	if (!isNaN(color) && COMPONENT_STATE.currentCooldown > 0 && COMPONENT_STATE.userStatus == UserStatus.ADMIN)
+	{
+		adminPlacePixel(color, Math.floor(CAMERA.x), Math.floor(CAMERA.y));
+		return;
+	}
+
 	if (isNaN(color) || COMPONENT_STATE.cooldown < 0 || COMPONENT_STATE.currentCooldown > 0 || COMPONENT_STATE.userStatus < UserStatus.LOGGED_IN) return ERROR_SOUND.play();
 
 	const x = Math.floor(CAMERA.x);
 	const y = Math.floor(CAMERA.y);
 
-	fetch("/place", { method: "POST", body: JSON.stringify({ x, y, color }) })
+	const isAdmin = false
+
+	fetch("/place", { method: "POST", body: JSON.stringify({ x, y, color, isAdmin }) })
 		.then(r => r.json())
 		.then(place =>
 		{
@@ -601,6 +622,36 @@ function placePixel(color)
 
 	PICKER.classList.add("lowered");
 	PLACE_SOUND.play();
+}
+
+function adminPlacePixel(color, x, y)
+{
+	if (isNaN(color) || COMPONENT_STATE.cooldown < 0 || COMPONENT_STATE.userStatus < UserStatus.ADMIN) return ERROR_SOUND.play();
+
+	const isAdmin = true;
+
+	fetch("/place", { method: "POST", body: JSON.stringify({ x, y, color, isAdmin }) })
+		.then(r => r.json())
+		.then(place =>
+		{
+			if (!place.error) return;
+
+			CANVAS_TEXTURE.set(
+				x - canvasX + CANVAS_TEXTURE.width / 2,
+				y - canvasY + CANVAS_TEXTURE.height / 2,
+				1, 1,
+				new Uint8Array([ ...Calc.unpackRGB(place.previousColor), 255 ])
+			);
+
+			return console.error("Error while placing pixel:", place.error);
+		});
+
+	CANVAS_TEXTURE.set(
+		x - canvasX + CANVAS_TEXTURE.width / 2,
+		y - canvasY + CANVAS_TEXTURE.height / 2,
+		1, 1,
+		new Uint8Array([ ...Calc.unpackRGB(color), 255 ])
+	);
 }
 
 function pickOrPlace()

@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="global.css">
 	<link rel="stylesheet" href="styles.css">
 
-	<title>ManePlace</title>
+	<title>PlaceHeeler</title>
 
 	<script defer src="elements/color-picker.js" type="module"></script>
 	<script defer src="elements/x-tooltip.js" type="module"></script>
@@ -44,12 +44,12 @@
 			<div class="close button" tabindex=0>
 				<img src="./assets/images/x.svg" height="15px">
 			</div>
-			<div class="fs-xl title">Welcome to ManePlace, the mane place to place manes... and pixels!</div>
+			<div class="fs-xl title">Welcome to PlaceHeeler, your house to place pixels and create awesome art together, for real life!</div>
 			<div class="center option">
 				<div class="center border block" style="background-color: orange;">
 					<img src="./assets/images/selector.png" height="30px">
 				</div>
-				<div>Place a pixel to create something. You can do that every minute!</div>
+				<div>Place a pixel to create something. You can only place one pixel each certain period, so you'll need to work together to make cool stuff!</div>
 			</div>
 			<div class="center option">
 				<div class="center border block" style="background-color: blue;">
@@ -83,7 +83,7 @@
 			<div class="fs-xl title">Menu</div>
 			<a id="github" class="gray button option" href="https://github.com/Manechat/place.manechat.net">
 				<img src="./assets/images/github.svg" width="30px">
-				<b>By Mercurial</b>
+				<b>By Mercurial (ManeChat)</b>
 			</a>
 			<div id="configure" class="gray button option">
 				<img src="./assets/images/cog.svg" width="30px">
@@ -93,6 +93,10 @@
 				<img src="./assets/images/stats.svg" width="30px">
 				<b>Stats</b>
 			</a>
+			<div id="discordinvite" class="gray button option">
+				<img src="./assets/images/discord.svg" width="30px">
+				<b>Join The Heeler House</b>
+			</div>
 			<div id="moderate" class="hidden gray button option">
 				<img src="./assets/images/wrench.svg" width="30px">
 				<b>Mod tools</b>
@@ -142,5 +146,10 @@
 			</div>
 		</div>
 	</dialog>
+
+	<div id="loading-screen">
+		<img src="./assets/images/dance.gif">
+		<div><b>Loading...</b></div>
+	</div>
 </body>
 </html>

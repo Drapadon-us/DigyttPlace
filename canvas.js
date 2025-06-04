@@ -153,6 +153,22 @@ export class Canvas extends EventEmitter
 		return { cooldown: placeTimestamps.next - placeTimestamps.last };
 	}
 
+	adminPlace(x, y, color, userId, timestamp = Date.now())
+	{
+		const absoluteX = x + this.pivotX;
+		const absoluteY = y + this.pivotY;
+
+		if (absoluteX < 0 || absoluteX > this.image.sizeX || absoluteY < 0 || absoluteY > this.image.sizeY) return { error: ErrorCode.OUT_OF_BOUNDS };
+		if (!this.colors.includes(color)) return { error: ErrorCode.COLOR_NOT_FOUND };
+
+		this.image.setColor(absoluteX, absoluteY, color);
+		this.pixelMap.get(x, () => new LazyMap()).get(y, () => ( {} )).userId = userId;
+
+		this.emit("dispatch", { id: Event.PLACE, x, y, color, userId, timestamp });
+
+		return {};
+	}
+
 	expand(nx, ny, px, py, userId, timestamp = Date.now())
 	{
 		if (nx < 0 || ny < 0 || px < 0 || py < 0) return { error: ErrorCode.UNSUPPORTED_EXPANSION };

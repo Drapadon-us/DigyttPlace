@@ -2,6 +2,7 @@
   "type": "module",
   "dependencies": {
     "@polka/compression": "^1.0.0-next.25",
+    "dotenv": "^16.5.0",
     "polka": "^0.5.2",
     "sirv": "^2.0.4",
     "ws": "^8.18.0"
