@@ -148,7 +148,7 @@ export class GatewayClient extends EventEmitter // TODO: Timeouts on waits
 		}
 		else
 		{
-			this._send({ op: Opcode.IDENTIFY, d: { token: this._token, intents: this._intents, properties: { os: "linux", browser: "placeheeler", device: "placeheeler" } } });
+			this._send({ op: Opcode.IDENTIFY, d: { token: this._token, intents: this._intents, properties: { os: "linux", browser: "digyttplace", device: "digyttplace" } } });
 			const ready = await this.next("READY").wait();
 			this._sessionId = ready.session_id;
 			this._resumeGatewayUrl = ready.resume_gateway_url;

@@ -11,16 +11,15 @@ import * as Discord from "./discord.api.js";
 import { intersects } from "./util.js";
 import ChannelTracker from "./channel.tracker.js";
 import Statistics from "./canvas.stats.js";
-import dotenv from "dotenv";
-dotenv.config();
+const { clientToken, clientId, clientSecret } = require("./botdata.json")
 
 
 
 // TODO: Add /api/... path to all endpoints (Polka is dogshit and wouldn't allow me to mount middleware like that)
 
 // ---------------- Discord ----------------
-console.log(process.env.DISCORD_TOKEN)
-const DISCORD = new Discord.Client(process.env.DISCORD_TOKEN, Discord.Intent.GUILDS | Discord.Intent.GUILD_MEMBERS);
+console.log(clientToken)
+const DISCORD = new Discord.Client(clientToken, Discord.Intent.GUILDS | Discord.Intent.GUILD_MEMBERS);
 
 DISCORD._gatewayClient.on("close", (c, r) => console.log(new Date().toLocaleString(), c, r));
 DISCORD._gatewayClient.on("error", e => console.log(new Date().toLocaleString(), e));
@@ -104,7 +103,7 @@ SERVER.get("/login", (req, res) =>
 {
 	const protocol = req.headers.host.includes("localhost") ? "http" : "https";
 	const query = Query.encode({
-		client_id: process.env.DISCORD_CLIENT_ID,
+		client_id: clientId,
 		response_type: "code",
 		redirect_uri: `${protocol}://${req.headers.host}/login/redirect`, // TODO: Automatically determine protocol
 		scope: "identify",
@@ -123,8 +122,8 @@ SERVER.get("/login/redirect", async (req, res) =>
 	if (!code) return res.redirect(redirect);
 
 	const query = {
-		client_id: process.env.DISCORD_CLIENT_ID,
-		client_secret: process.env.DISCORD_CLIENT_SECRET,
+		client_id: clientId,
+		client_secret: clientSecret,
 		grant_type: "authorization_code",
 		redirect_uri: `${protocol}://${req.headers.host}/login/redirect`, // TODO: Same
 		code,
@@ -226,7 +225,7 @@ SERVER.post("/placer", async (req, res) =>
 
 	if (!nick)
 	{
-		const user = await fetch(`https://discord.com/api/users/${userId}`, { headers: { "Authorization": `Bot ${process.env.DISCORD_TOKEN}` } })
+		const user = await fetch(`https://discord.com/api/users/${userId}`, { headers: { "Authorization": `Bot ${clientToken}` } })
 			.then(r => r.json())
 			.catch(() => null);
 

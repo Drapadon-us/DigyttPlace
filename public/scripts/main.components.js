@@ -56,7 +56,7 @@ export function PlaceTextComponent()
 
 	return state => // userStatus, cooldown, currentCooldown
 	{
-		if (state.cooldown < 0) element.textContent = "PlaceHeeler is closed";
+		if (state.cooldown < 0) element.textContent = "DigyttPlace is closed";
 		else if (state.userStatus === UserStatus.LOGGED_OUT) element.textContent = "Log in to place!";
 		else if (state.userStatus === UserStatus.NOT_IN_SERVER) element.textContent = `Join ${state.guildName} to place!`;
 		else if (state.userStatus === UserStatus.BANNED) element.textContent = "Restricted";
