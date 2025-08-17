@@ -41,15 +41,18 @@
 
 	<dialog id="help" class="fs-m fw-l border shadow white">
 		<div class="modal">
-			<div class="close button" tabindex=0>
+			<div class="close button" tabindex=1>
 				<img src="./assets/images/x.svg" height="15px">
 			</div>
-			<div class="fs-xl title">Welcome to DigyttPlace, a personal r/place clone project created by Digytt!</div>
+			<div class="about button" tabindex=0>
+				<img src="./assets/images/info1.svg" height="15px">
+			</div>
+			<div class="fs-xl title">Welcome to DigyttPlace!</div>
 			<div class="center option">
 				<div class="center border block" style="background-color: orange;">
 					<img src="./assets/images/selector.png" height="30px">
 				</div>
-				<div>Place a pixel to create something. You can only place one pixel each certain period, so you'll need to work together to make cool stuff!</div>
+				<div>Place a pixel to create something. You can only place one pixel each minute, so you'll need to work together to make cool stuff!</div>
 			</div>
 			<div class="center option">
 				<div class="center border block" style="background-color: blue;">
@@ -70,7 +73,26 @@
 				<div>Zoom in to see who placed a pixel</div>
 			</div>
 			<div id="letsgo" class="fs-l orange button option">
-				<b style="margin-left: 0;">Let's Gooooooo!</b>
+				<b style="margin-left: 0;">I don't need help smh close this</b>
+			</div>
+		</div>
+	</dialog>
+
+	<dialog id="information" class="fs-m fw-l border shadow white">
+		<div class="modal">
+			<div class="back button">
+				<img src="./assets/images/left-arrow.svg" height="15px">
+			</div>
+			<div class="fs-xl title">Welcome to DigyttPlace, a personal r/Place clone project!</div>
+			<div>
+				<p>This is a personal project created by Digytt, based off of the source code from this <a href="https://github.com/The-Heeler-House/PlaceHeeler" target="_blank"><u>GitHub</u></a> project.</p><br>
+				<p>This is one of my first coding projects, so I hope you enjoy it!</p><br>
+				<p><strong>THIS PROJECT IS STILL IN DEVELOPMENT!</strong> If you find this link, feel free to play around! However, things will not be perfect, and the server may be unstable!</p><br>
+				<p>If you need help, or if there is an issue, please reach out to Digytt on discord.</p><br>
+				<p>And of course, have fun!</p><br>
+			</div>
+			<div id="closethis" class="fs-l orange button option">
+				<b style="margin-left: 0;">Close This</b>
 			</div>
 		</div>
 	</dialog>
@@ -81,9 +103,9 @@
 				<img src="./assets/images/x.svg" height="15px">
 			</div>
 			<div class="fs-xl title">Menu</div>
-			<a id="github" class="gray button option" href="https://github.com/Manechat/place.manechat.net">
+			<a id="github" class="gray button option" href="https://github.com/digytt/DigyttPlace">
 				<img src="./assets/images/github.svg" width="30px">
-				<b>By Mercurial (ManeChat)</b>
+				<b>Source Code (By Mercurial/JalenLu)</b>
 			</a>
 			<div id="configure" class="gray button option">
 				<img src="./assets/images/cog.svg" width="30px">
@@ -95,15 +117,15 @@
 			</a>
 			<div id="discordinvite" class="gray button option">
 				<img src="./assets/images/discord.svg" width="30px">
-				<b>Join The Heeler House</b>
+				<b>Join Drap's Server Stuff!</b>
 			</div>
 			<div id="moderate" class="hidden gray button option">
 				<img src="./assets/images/wrench.svg" width="30px">
-				<b>Mod tools</b>
+				<b>Admin Commands</b>
 			</div>
 			<div id="logout" class="hidden gray button option">
 				<img src="./assets/images/logout.svg" width="35px">
-				<b>Log out</b>
+				<b>Log Out</b>
 			</div>
 		</div>
 	</dialog>
@@ -118,14 +140,11 @@
 			</div>
 			<div class="fs-xl low title">Options</div>
 			<div id="toggle-place-on-click" class="gray button option">
-				<b>Click anywhere to place</b>
+				<b>Click Anywhere To Place</b>
 				<b class="toggle">OFF</b>
 			</div>
 			<div id="colors" class="gray button option">
-				<b>Copy colors</b>
-			</div>
-			<div id="pipe" class="gray button option">
-				<b>Metal pipe</b>
+				<b>Copy Colours</b>
 			</div>
 		</div>
 	</dialog>
@@ -138,7 +157,7 @@
 			<div class="close button" tabindex=0>
 				<img src="./assets/images/x.svg" height="15px">
 			</div>
-			<div class="fs-xl low title">Mod tools</div>
+			<div class="fs-xl low title">Admin Commands</div>
 			<input id="input" class="center text input option" type="text" placeholder="Enter a command" />
 			<div id="output" class="gray center text option">Output:</div>
 			<div id="command" class="gray button option">
@@ -148,7 +167,6 @@
 	</dialog>
 
 	<div id="loading-screen">
-		<img src="./assets/images/dance.gif">
 		<div><b>Loading...</b></div>
 	</div>
 </body>

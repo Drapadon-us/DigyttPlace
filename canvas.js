@@ -78,7 +78,7 @@ export class Canvas extends EventEmitter
 	{
 		super();
 
-		this.image = new RawImage(0, 0);
+		this.image = new RawImage(1024, 1024);
 		this.colors = [];
 		this.cooldown = 0;
 
@@ -130,7 +130,7 @@ export class Canvas extends EventEmitter
 		const absoluteX = x + this.pivotX;
 		const absoluteY = y + this.pivotY;
 
-		if (absoluteX < 0 || absoluteX > this.image.sizeX || absoluteY < 0 || absoluteY > this.image.sizeY) return { error: ErrorCode.OUT_OF_BOUNDS };
+		if (absoluteX < 0 || absoluteX > this.image.sizeX || absoluteY < 0 || absoluteY > this.image.sizeY) return { error: ErrorCode.OUT_OF_BOUNDS }; // TODO: Hames make my old canvas on here smh
 		if (!this.colors.includes(color)) return { error: ErrorCode.COLOR_NOT_FOUND };
 		if (this.cooldown < 0) return { error: ErrorCode.CANVAS_CLOSED };
 

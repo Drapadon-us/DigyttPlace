@@ -59,8 +59,6 @@ const [
 
 	SELECT_SOUND, CANCEL_SOUND, PICK_SOUND, PLACE_SOUND, ERROR_SOUND, REFRESH_SOUND, CLICK_SOUND,
 
-	PIPE_SOUND,
-
 ] = await Promise.all([
 
 	loadFile("./assets/shaders/tex.vsh"),
@@ -76,9 +74,7 @@ const [
 	MIXER.load("./assets/sounds/place.mp3"),
 	MIXER.load("./assets/sounds/error.mp3"),
 	MIXER.load("./assets/sounds/refresh.mp3"),
-	MIXER.load("./assets/sounds/click.mp3"),
-	
-	MIXER.load("./assets/sounds/pipe.mp3"),
+	MIXER.load("./assets/sounds/click.mp3")
 ]);
 
 
@@ -110,7 +106,7 @@ PICKER.addEventListener("cancel", () => closePicker());
 document.getElementById("place").onclick = () =>
 {
 	if (COMPONENT_STATE.userStatus === UserStatus.LOGGED_OUT) window.location.href = "/login";
-	else if (COMPONENT_STATE.userStatus === UserStatus.NOT_IN_SERVER) window.location.href = COMPONENT_STATE.guildInvite;
+//	else if (COMPONENT_STATE.userStatus === UserStatus.NOT_IN_SERVER) window.location.href = COMPONENT_STATE.guildInvite; (Turning off in-server requirement.)
 	else if (COMPONENT_STATE.cooldown < 0) ERROR_SOUND.play();
 	else openPicker();
 };
@@ -121,6 +117,14 @@ const HELP = document.getElementById("help");
 document.getElementById("explain").onclick = () => { HELP.showModal(); CLICK_SOUND.play(); };
 document.getElementById("letsgo").onclick = () => { HELP.close(); CLICK_SOUND.play(); };
 HELP.querySelector(".close").onclick = () => { HELP.close(); CLICK_SOUND.play(); };
+HELP.querySelector(".about").onclick = () => { HELP.close(); ABOUT.showModal(); CLICK_SOUND.play(); };
+
+// --------------------------------------
+
+const ABOUT = document.getElementById("information");
+document.getElementById("closethis").onclick = () => { ABOUT.close(); HELP.showModal(); CLICK_SOUND.play(); };
+ABOUT.querySelector(".back").onclick = () => { ABOUT.close(); HELP.showModal(); CLICK_SOUND.play(); };
+
 
 // --------------------------------------
 
@@ -140,13 +144,13 @@ document.getElementById("logout").onclick = () =>
 
 // --------------------------------------
 
-function openHeelerHouse()
+function openDrapServerStuff()
 {
 	CLICK_SOUND.play();
-	window.location.href = "https://discord.gg/blueyheeler";
+	window.location.href = "https://discord.gg/XRxCd4kME3";
 }
 
-document.getElementById("discordinvite").onclick = openHeelerHouse;
+document.getElementById("discordinvite").onclick = openDrapServerStuff;
 
 const OPTIONS = document.getElementById("options");
 document.getElementById("configure").onclick = () => { MENU.close(); OPTIONS.showModal(); CLICK_SOUND.play(); };
@@ -167,8 +171,6 @@ COLORS.onclick = () =>
 	CLICK_SOUND.play();
 };
 
-document.getElementById("pipe").onclick = () => PIPE_SOUND.play("master_pipe");
-
 // --------------------------------------
 
 const TOOLS = document.getElementById("tools");
@@ -183,7 +185,7 @@ const OUTPUT = document.getElementById("output");
 INPUT.onkeydown = e => e.stopPropagation();
 INPUT.onkeyup = e => e.stopPropagation();
 
-document.getElementById("command").onclick = () => // TODO: Move the parsing logic somewhere else
+document.getElementById("command").onclick = () =>
 {
 	const args = INPUT.value.split(" ");
 	const base = args.shift();
@@ -218,11 +220,11 @@ document.getElementById("command").onclick = () => // TODO: Move the parsing log
 			.then(r =>
 			{
 				if (r.error) OUTPUT.textContent = `Error ${r.error}`;
-				else OUTPUT.textContent = "Server says: OK";
+				else OUTPUT.textContent = "Command Successfully Sent";
 			})
 			.catch(e => OUTPUT.textContent = e);
 	}
-	else OUTPUT.textContent = "Output: Command not found";
+	else OUTPUT.textContent = "Command Not Found";
 
 	INPUT.value = "";
 

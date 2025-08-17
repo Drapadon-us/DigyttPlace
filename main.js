@@ -43,7 +43,7 @@ async function getUserStatus(userId) // TODO: middleware?
 
 	const member = await DISCORD.getGuildMember(CONFIG.guildId, userId);
 
-	if (!member) return UserStatus.NOT_IN_SERVER;
+	if (!member) return UserStatus.LOGGED_IN; // UserStatus.NOT_IN_SERVER; (Turning off in server requirement)
 	else if (intersects(member.roles, CONFIG.adminRoles)) return UserStatus.ADMIN;
 	else if (intersects(member.roles, CONFIG.bannedRoles)) return UserStatus.BANNED;
 	return UserStatus.LOGGED_IN;

@@ -75,7 +75,7 @@ canvas
 	padding: 20px 30px;
 }
 
-.modal .close, .modal .back
+.modal .close, .modal .back, .modal .about
 {
 	position: absolute;
 
@@ -90,7 +90,7 @@ canvas
 	right: -3px;
 }
 
-.modal .back
+.modal .back, .modal .about
 {
 	left: -3px;
 }
@@ -167,12 +167,12 @@ canvas
 	outline: none;
 }
 
-#help .option:not(:last-child)
+#help .option:not(:last-child), #information .option:not(:last-child)
 {
 	margin-bottom: 20px;
 }
 
-#letsgo, #command
+#letsgo, #command, #closethis
 {
 	justify-content: center;
 }
