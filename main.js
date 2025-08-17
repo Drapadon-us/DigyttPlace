@@ -24,7 +24,7 @@ const DISCORD = new Discord.Client(clientToken, Discord.Intent.GUILDS | Discord.
 DISCORD._gatewayClient.on("close", (c, r) => console.log(new Date().toLocaleString(), c, r));
 DISCORD._gatewayClient.on("error", e => console.log(new Date().toLocaleString(), e));
 
-await DISCORD.login().then(u => console.log(`Logged in as ${u.username}`));
+await DISCORD.login().then(u => console.log(`Discord bot logged in as ${u.username}`));
 
 
 
@@ -37,15 +37,20 @@ class UserStatus
 	static ADMIN = 11;
 }
 
-async function getUserStatus(userId) // TODO: middleware?
+async function getUserStatus(userId)
 {
 	if (!userId) return UserStatus.LOGGED_OUT;
-
+	const CONFIG = await FileSystem.readFile(Path.join(import.meta.dirname, "data", "config.json"))
+	.then(s => JSON.parse(s))
+	.catch(() => ( {} ));
+	if (CONFIG.bannedUsers.some(a => a.toString().includes(userId))) {
+		console.log('User ' + userId + ' is banned! Restricting place access.');
+		return UserStatus.BANNED;
+	}
 	const member = await DISCORD.getGuildMember(CONFIG.guildId, userId);
 
 	if (!member) return UserStatus.LOGGED_IN; // UserStatus.NOT_IN_SERVER; (Turning off in server requirement)
 	else if (intersects(member.roles, CONFIG.adminRoles)) return UserStatus.ADMIN;
-	else if (intersects(member.roles, CONFIG.bannedRoles)) return UserStatus.BANNED;
 	return UserStatus.LOGGED_IN;
 }
 
@@ -140,6 +145,7 @@ SERVER.get("/login/redirect", async (req, res) =>
 			.catch(() => null);
 
 		if (user) res.createSession({ userId: user.id });
+		console.log("User '" + user.username + "' logged in. UID: " + user.id)
 	}
 
 	res.redirect(redirect);
@@ -331,4 +337,4 @@ SERVER.get("/statistics-for/:id", async (req, res) =>
 
 // ---------------- Start ----------------
 
-SERVER.listen(5001, () => console.log(`Server started on port 5001`));
+SERVER.listen(8080, () => console.log(`Server started on port 5001`));

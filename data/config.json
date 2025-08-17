@@ -3,6 +3,7 @@
 	"guildName": "draps server stuff",
 	"guildInvite": "discord.gg/QUVAHc3tFb",
 	"bannedRoles": [""],
+	"bannedUsers": [""],
 	"adminRoles": ["1404693853692231710"],
 	"pixelCountInterval": 0,
 	"pixelCountWindow": 0,
