@@ -42,6 +42,7 @@ Make sure your user has the admin role you specified earlier in the config.json 
 now, open a terminal or command prompt window to the folder the project is saved in
 
 finally, run `node main`
+
 it should be hosted at http://localhost:8080/
 
 Side note: you can also go into the code and change things from 'DigyttPlace' to your own website name, or change any other text content in the .html files if you'd like to personalise your experience.
@@ -49,8 +50,8 @@ Side note: you can also go into the code and change things from 'DigyttPlace' to
 Have fun!
 
 Admin Commands
-colors (hex code, hex code, hex code, etc)
-cooldown (seconds)
-expand (length, width, length, width)
+`colors (hex code, hex code, hex code, etc)`,
+`cooldown (seconds)`,
+`expand (length, width, length, width)`
 
 r/place regular color pallette: colors 6B0119 BD0037 FF4500 FEA800 FFD435 FEF8B9 01A267 09CC76 7EEC57 02756D 009DAA 00CCBE 244FA4 3790EA 52EAF3 4839BF 695BFF 94B3FF 801D9F B449BF E4ABFD DD117E FE3781 FE99A9 6D462F 9B6926 FEB470 000000 525252 888D90 D5D6D8 FFFFFF
