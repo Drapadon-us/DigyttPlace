@@ -54,7 +54,7 @@ export async function readEvents(canvas, path)
 			const x = buf.next(2).readInt16LE();
 			const y = buf.next(2).readInt16LE();
 			const color = buf.next(3).readUintLE(0, 3);
-			canvas.place(x, y, color, userId, timestamp);
+			canvas.place_unsafe_fromfile(x, y, color, userId, timestamp);
 		}
 		else if (eventId === Event.EXPAND)
 		{
