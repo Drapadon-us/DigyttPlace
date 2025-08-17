@@ -178,7 +178,7 @@ async function generateTimelapse()
 
 	if (!eventsBuf)
 	{
-		console.log(`File '${path}' doesn't exist`);
+		console.log(`[${new Date().toLocaleString()}] ` + `File '${path}' doesn't exist`);
 		return reader.close();
 	}
 
@@ -261,7 +261,7 @@ async function generateTimelapse()
 			const progress = Math.floor((pixelNum / pixels) * 100);
 			const newProgress = Math.floor((++pixelNum / pixels) * 100);
 	
-			if(progress !== newProgress) console.log(newProgress + "%");
+			if(progress !== newProgress) console.log(`[${new Date().toLocaleString()}] ` + newProgress + "%");
 		});
 		events.read(eventsBuf);
 	}

@@ -20,12 +20,10 @@ import { clientToken, clientId, clientSecret } from "./data/botdata.js"
 // ---------------- Discord ----------------
 const DISCORD = new Discord.Client(clientToken, Discord.Intent.GUILDS | Discord.Intent.GUILD_MEMBERS);
 
-DISCORD._gatewayClient.on("close", (c, r) => console.log(new Date().toLocaleString(), c, r));
-DISCORD._gatewayClient.on("error", e => console.log(new Date().toLocaleString(), e));
+DISCORD._gatewayClient.on("close", (c, r) => console.log(`[${new Date().toLocaleString()}] ` + c, r));
+DISCORD._gatewayClient.on("error", e => console.log(`[${new Date().toLocaleString()}] ` + e));
 
-await DISCORD.login().then(u => console.log(`Discord bot logged in as ${u.username}`));
-
-
+await DISCORD.login().then(u => console.log(`[${new Date().toLocaleString()}] ` + `Discord bot logged in as ${u.username}`));
 
 class UserStatus
 {
@@ -43,7 +41,7 @@ async function getUserStatus(userId)
 	.then(s => JSON.parse(s))
 	.catch(() => ( {} ));
 	if (CONFIG.bannedUsers.some(a => a.toString().includes(userId))) {
-		console.log('User ' + userId + ' is banned! Restricting place access.');
+		console.log(`[${new Date().toLocaleString()}] ` + 'User ' + userId + ' is banned! Restricting place access.');
 		return UserStatus.BANNED;
 	}
 	const member = await DISCORD.getGuildMember(CONFIG.guildId, userId);
@@ -144,7 +142,7 @@ SERVER.get("/login/redirect", async (req, res) =>
 			.catch(() => null);
 
 		if (user) res.createSession({ userId: user.id });
-		console.log("User '" + user.username + "' logged in. UID: " + user.id)
+		console.log(`[${new Date().toLocaleString()}] ` + "User '" + user.username + "' logged in. UID: " + user.id)
 	}
 
 	res.redirect(redirect);
@@ -336,4 +334,4 @@ SERVER.get("/statistics-for/:id", async (req, res) =>
 
 // ---------------- Start ----------------
 
-SERVER.listen(8080, () => console.log(`Server started on port 8080`));
+SERVER.listen(8080, () => console.log(`[${new Date().toLocaleString()}] ` + `Server started on port 8080`));

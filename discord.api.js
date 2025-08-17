@@ -130,8 +130,8 @@ export class GatewayClient extends EventEmitter // TODO: Timeouts on waits
 		// always try to resume UNLESS we don't have the resume url OR we forced a re-identify
 		const resume = !force && this._sequence && this._sessionId && this._resumeGatewayUrl;
 
-		if (resume) console.log("Attempting resume...");
-		else console.log("Attempting identify...");
+		if (resume) console.log(`[${new Date().toLocaleString()}] Attempting resume...`);
+		else console.log(`[${new Date().toLocaleString()}] Attempting identify...`);
 
 		const url = resume ? this._resumeGatewayUrl : GatewayClient.INITIAL_GATEWAY_URL;
 		this._ws = new WebSocket(`${url}?${GatewayClient.GATEWAY_PARAMETERS}`);

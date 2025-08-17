@@ -14,7 +14,7 @@ function createShader(gl, type, source)
 		return shader;
 	}
 
-	console.log(gl.getShaderInfoLog(shader));
+	console.log(`[${new Date().toLocaleString()}]` + gl.getShaderInfoLog(shader));
 
 	gl.deleteShader(shader);
 }
@@ -35,7 +35,7 @@ function createProgram(gl, vertexSource, fragmentSource)
 		return program;
 	}
 
-	console.log(gl.getProgramInfoLog(program));
+	console.log(`[${new Date().toLocaleString()}] ` + gl.getProgramInfoLog(program));
 	
 	gl.deleteProgram(program);
 }
