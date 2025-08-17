@@ -11,7 +11,7 @@ import * as Discord from "./discord.api.js";
 import { intersects } from "./util.js";
 import ChannelTracker from "./channel.tracker.js";
 import Statistics from "./canvas.stats.js";
-import { clientToken, clientId, clientSecret } from "./botdata.js"
+import { clientToken, clientId, clientSecret } from "./data/botdata.js"
 
 
 
