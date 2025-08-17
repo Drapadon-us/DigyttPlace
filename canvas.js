@@ -125,7 +125,7 @@ export class Canvas extends EventEmitter
 		return this.pixelMap.get(x)?.get(y)?.userId;
 	}
 
-	place(x, y, color, userId, timestamp = Date.now()) // TODO: Bypass checks during read?
+	place(x, y, color, userId, timestamp = Date.now())
 	{
 		const absoluteX = x + this.pivotX;
 		const absoluteY = y + this.pivotY;
@@ -141,6 +141,24 @@ export class Canvas extends EventEmitter
 			remainingCooldown: nextPlaceTimestamp - timestamp,
 			previousColor: this.image.getColor(absoluteX, absoluteY)
 		};
+
+		this.image.setColor(absoluteX, absoluteY, color);
+		this.pixelMap.get(x, () => new LazyMap()).get(y, () => ( {} )).userId = userId;
+		const placeTimestamps = this.userMap.get(userId, () => ( {} )).placeTimestamps ??= {};
+		placeTimestamps.last = timestamp;
+		placeTimestamps.next = timestamp + this.cooldown * 1000;
+
+		this.emit("dispatch", { id: Event.PLACE, x, y, color, userId, timestamp });
+
+		return { cooldown: placeTimestamps.next - placeTimestamps.last };
+	}
+
+	place_unsafe_fromfile(x, y, color, userId, timestamp = Date.now())
+	{
+		const absoluteX = x + this.pivotX;
+		const absoluteY = y + this.pivotY;
+
+		if (absoluteX < 0 || absoluteX > this.image.sizeX || absoluteY < 0 || absoluteY > this.image.sizeY) return { error: ErrorCode.OUT_OF_BOUNDS };
 
 		this.image.setColor(absoluteX, absoluteY, color);
 		this.pixelMap.get(x, () => new LazyMap()).get(y, () => ( {} )).userId = userId;
