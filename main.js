@@ -271,31 +271,76 @@ SERVER.use("/expand", json);
 SERVER.post("/expand", async (req, res) =>
 {
 	if (!Number.isInteger(req.body.nx) || !Number.isInteger(req.body.ny) || !Number.isInteger(req.body.px) || !Number.isInteger(req.body.py)) return res.status(400).end();
-	if (!req.session?.userId) return res.status(401).end();
-	if (await getUserStatus(req.session.userId) !== UserStatus.ADMIN) return res.status(403).end();
+	if (!req.session?.userId) {
+		res.status(401).end();
+		console.log(`[${new Date().toLocaleString()}] ` + `Invalid user attempted to expand cavas. Access denied.`);
+		return;
+	}
+	if (await getUserStatus(req.session.userId) !== UserStatus.ADMIN) {
+		res.status(403).end();
+		console.log(`[${new Date().toLocaleString()}] ` + `Non-admin user ${req.session.userId} attempted to expand canvas. Access denied.`);
+		return;
+	}
 
 	res.json(CANVAS.expand(req.body.nx, req.body.ny, req.body.px, req.body.py, req.session.userId));
+	console.log(`[${new Date().toLocaleString()}] ` + `Canvas expanded by ${req.body.nx}, ${req.body.ny}, ${req.body.px}, ${req.body.py}. Admin: ${req.session.userId}`);
 });
 
 SERVER.use("/colors", json);
 SERVER.post("/colors", async (req, res) =>
 {
 	if (!Array.isArray(req.body.colors) || req.body.colors.some(c => !Number.isInteger(c))) return res.status(400).end();
-	if (!req.session?.userId) return res.status(401).end();
-	if (await getUserStatus(req.session.userId) !== UserStatus.ADMIN) return res.status(403).end();
+	if (!req.session?.userId) {
+		res.status(401).end();
+		console.log(`[${new Date().toLocaleString()}] ` + `Invalid user attempted to change colours. Access denied.`);
+		return;
+	}
+	if (await getUserStatus(req.session.userId) !== UserStatus.ADMIN) {
+		res.status(403).end();
+		console.log(`[${new Date().toLocaleString()}] ` + `Non-admin user ${req.session.userId} attempted to change colours. Access denied.`);
+		return;
+	}
 
 	res.json(CANVAS.setColors(req.body.colors, req.session.userId));
+	console.log(`[${new Date().toLocaleString()}] ` + `Colours set to ${req.body.colors}. Admin: ${req.session.userId}`);
 });
 
 SERVER.use("/cooldown", json);
 SERVER.post("/cooldown", async (req, res) =>
 {
 	if (!Number.isInteger(req.body.cooldown)) return res.status(400).end();
-	if (!req.session?.userId) return res.status(401).end();
-	if (await getUserStatus(req.session.userId) !== UserStatus.ADMIN) return res.status(403).end();
-
+	if (!req.session?.userId) {
+		res.status(401).end();
+		console.log(`[${new Date().toLocaleString()}] ` + `Invalid user attempted to change cooldown. Access denied.`);
+		return;
+	}
+	if (await getUserStatus(req.session.userId) !== UserStatus.ADMIN) {
+		res.status(403).end();
+		console.log(`[${new Date().toLocaleString()}] ` + `Non-admin user ${req.session.userId} attempted to change cooldown. Access denied.`);
+		return;
+	}
 	res.json(CANVAS.setCooldown(req.body.cooldown, req.session.userId));
+	console.log(`[${new Date().toLocaleString()}] ` + `Cooldown set to ${req.body.cooldown} seconds. Admin: ${req.session.userId}`);
 });
+
+SERVER.use("/shutdown", json);
+SERVER.post("/shutdown", async (req, res) =>
+{
+	if (!req.session?.userId) {
+		res.status(401).end();
+		console.log(`[${new Date().toLocaleString()}] ` + `Invalid user attempted shutdown.`);
+		return;
+	}
+	if (await getUserStatus(req.session.userId) !== UserStatus.ADMIN) {
+		res.status(403).end();
+		console.log(`[${new Date().toLocaleString()}] ` + `Non-admin user ${req.session.userId} attempted shutdown. Access denied.`);
+		return;
+	}
+
+	console.log(`[${new Date().toLocaleString()}] ` + `Server shutdown initiated by Admin ${req.session.userId}.`);
+	res.status(200).end();
+	process.exit(0);
+})
 
 
 

@@ -198,39 +198,65 @@ document.getElementById("command").onclick = () =>
 
 	let endpoint = null;
 	let data = null;
+	let commandResponse = null;
+	let commandStart = null;
 
 	if (base === "expand")
 	{
+		commandStart = `Expanding canvas...`;
 		endpoint = "/expand";
 		data = { nx: +args[0], ny: +args[1], px: +args[2], py: +args[3] };
+		commandResponse = `Canvas expanded by ${args[0], args[1], args[2], args[3]}`;
 	}
 	else if (base === "colors")
 	{
+		commandStart = `Setting colours...`;
 		endpoint = "/colors";
 		data = { colors: args.map(h => Calc.hexToInt(h)) };
+		commandResponse = `Colours successfully set.`;
 	}
 	else if (base === "cooldown")
 	{
+		commandStart = `Setting Cooldown...`;
 		endpoint = "/cooldown";
 		data = { cooldown: +args[0] };
+		commandResponse = `Cooldown set to ${args[0]} seconds.`;
+	}
+	else if (base === "shutdown")
+	{
+		commandStart = `Server shutdown initiated.`;
+		commandResponse = `Server is shutdown.`;
+		endpoint = "/shutdown";
+	}
+	else if (base === "hello")
+	{
+		return OUTPUT.textContent = `Output: Hello goofy`;
 	}
 
 	if (endpoint)
 	{
+		OUTPUT.textContent = `Output: ${commandStart}`;
 		fetch(endpoint, { method: "POST", body: JSON.stringify(data) })
 			.then(r =>
 			{
-				if (!r.ok) throw new Error(`${r.status}: ${r.statusText}`);
-				else return r.json();
+				if (!r.ok) {
+					commandResponse = `${r.status}: ${r.statusText}`;
+					OUTPUT.textContent = `Output: ${commandResponse}`;
+					return;
+				}
+				else {
+					r.json();
+					OUTPUT.textContent = `Output: ${commandResponse}`;
+					return;
+				}
 			})
 			.then(r =>
 			{
-				if (r.error) OUTPUT.textContent = `Error ${r.error}`;
-				else OUTPUT.textContent = "Command Successfully Sent";
+				if (r.error) OUTPUT.textContent = `Output: ${r.error}`;
+				OUTPUT.textContent = `Output: ${commandResponse}`;
 			})
-			.catch(e => OUTPUT.textContent = e);
 	}
-	else OUTPUT.textContent = "Command Not Found";
+	else OUTPUT.textContent = "Output: 404: Command Not Found.";
 
 	INPUT.value = "";
 
