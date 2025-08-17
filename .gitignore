@@ -1,5 +1,6 @@
 # DigyttPlace
-/data
+/data/events.bin
+/data/stats.json
 
 # Greenlock
 .greenlockrc
