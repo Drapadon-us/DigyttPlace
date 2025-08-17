@@ -6,8 +6,8 @@ Do you want to run your own r/place?
 
 I know rummaging through the code was hard for me to figure out, so here's how!
 
-Here's how!
 clone this repository by opening a terminal window and running `git clone https://www.github.com/digytt/digyttplace.git`
+
 make sure you have node.js installed on your machine.
 
 go to /data/config.json and change guildId, guildName, guildInvite, and adminRoles to your own server's.
