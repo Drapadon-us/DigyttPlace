@@ -18,7 +18,6 @@ import { clientToken, clientId, clientSecret } from "./botdata.js"
 // TODO: Add /api/... path to all endpoints (Polka is dogshit and wouldn't allow me to mount middleware like that)
 
 // ---------------- Discord ----------------
-console.log(clientToken)
 const DISCORD = new Discord.Client(clientToken, Discord.Intent.GUILDS | Discord.Intent.GUILD_MEMBERS);
 
 DISCORD._gatewayClient.on("close", (c, r) => console.log(new Date().toLocaleString(), c, r));
@@ -337,4 +336,4 @@ SERVER.get("/statistics-for/:id", async (req, res) =>
 
 // ---------------- Start ----------------
 
-SERVER.listen(8080, () => console.log(`Server started on port 5001`));
+SERVER.listen(8080, () => console.log(`Server started on port 8080`));

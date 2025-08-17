@@ -105,7 +105,7 @@ PICKER.addEventListener("cancel", () => closePicker());
 
 document.getElementById("place").onclick = () =>
 {
-	if (COMPONENT_STATE.userStatus === UserStatus.LOGGED_OUT) window.location.href = "/login";
+	if (COMPONENT_STATE.userStatus === UserStatus.LOGGED_OUT) CLICK_SOUND.play(), LOGINPOPUP.showModal();
 //	else if (COMPONENT_STATE.userStatus === UserStatus.NOT_IN_SERVER) window.location.href = COMPONENT_STATE.guildInvite; (Turning off in-server requirement.)
 	else if (COMPONENT_STATE.cooldown < 0) ERROR_SOUND.play();
 	else openPicker();
@@ -118,6 +118,12 @@ document.getElementById("explain").onclick = () => { HELP.showModal(); CLICK_SOU
 document.getElementById("letsgo").onclick = () => { HELP.close(); CLICK_SOUND.play(); };
 HELP.querySelector(".close").onclick = () => { HELP.close(); CLICK_SOUND.play(); };
 HELP.querySelector(".about").onclick = () => { HELP.close(); ABOUT.showModal(); CLICK_SOUND.play(); };
+
+// --------------------------------------
+
+const LOGINPOPUP = document.getElementById("loginpopup");
+document.getElementById("loginnow").onclick = () => { CLICK_SOUND.play(); window.location.href = "/login"; };
+LOGINPOPUP.querySelector(".close").onclick = () => { LOGINPOPUP.close(); CLICK_SOUND.play(); };
 
 // --------------------------------------
 

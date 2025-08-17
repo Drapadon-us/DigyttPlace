@@ -167,12 +167,12 @@ canvas
 	outline: none;
 }
 
-#help .option:not(:last-child), #information .option:not(:last-child)
+#help .option:not(:last-child), #information .option:not(:last-child), #loginpopup .option:not(:last-child)
 {
 	margin-bottom: 20px;
 }
 
-#letsgo, #command, #closethis
+#letsgo, #command, #closethis, #loginnow
 {
 	justify-content: center;
 }
