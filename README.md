@@ -1,6 +1,6 @@
 # ty jalen for the code lmfao
 
-# This project is running at https://place.drapadon.us
+# This project is running at https://place.drapadon.org
 
 Do you want to run your own r/place?
 
@@ -23,7 +23,7 @@ export {clientToken, clientId, clientSecret};
 
 go to https://discord.com/developers/applications and create a new application.
 
-go into the OAuth2 Section, and in redirects add one with 'http://localhost:8080/login/redirect', and add two more with your own domain if you're hosting this publicly (one with http and one with https) example: http://place.drapadon.us/login/redirect and https://place.drapadon.us/login/redirect
+go into the OAuth2 Section, and in redirects add one with 'http://localhost:8080/login/redirect', and add two more with your own domain if you're hosting this publicly (one with http and one with https) example: http://place.drapadon.org/login/redirect and https://place.drapadon.org/login/redirect
 
 Copy client ID, change botdata.js clientId to it
 
