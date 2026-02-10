@@ -1,4 +1,4 @@
-# This project is running at https://place.drapadon.org
+# This project is discontinued/archived.
 
 Do you want to run your own r/place?
 
